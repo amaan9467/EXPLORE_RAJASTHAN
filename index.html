@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title> Explore Rajasthan</title>
+<link rel="icon" type="image/png" href="logoo.jpg" />
+
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+<link href="style.css" rel="stylesheet"/></head>
+<body>
+
+    <!-- Popup Modal Overlay -->
+<div id="authModal" class="modal-overlay" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+">
+    <!-- Modal Container -->
+    <div class="auth-modal" style="
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        width: 90%;
+        max-width: 450px;
+        max-height: 90vh;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: scale(0.7);
+        transition: all 0.3s ease;
+    ">
+        
+        <!-- Background Design Elements -->
+        <div style="
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 1;
+        "></div>
+        
+        <div style="
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 1;
+        "></div>
+
+        <!-- Close Button -->
+        <button id="closeModal" style="
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: #e74c3c;
+            font-size: 18px;
+        " 
+        onmouseover="this.style.background='rgba(231, 76, 60, 0.2)'; this.style.transform='scale(1.1)'"
+        onmouseout="this.style.background='rgba(231, 76, 60, 0.1)'; this.style.transform='scale(1)'">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Modal Content -->
+        <div style="padding: 40px 35px; position: relative; z-index: 2;">
+            
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    background: linear-gradient(135deg, #e74c3c, #f39c12);
+                    border-radius: 50%;
+                    margin: 0 auto 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+                ">
+                    <i class="fas fa-user-circle" style="color: white; font-size: 35px;"></i>
+                </div>
+                
+                <h2 style="
+                    font-family: 'Playfair Display', serif;
+                    color: #2c3e50;
+                    margin: 0 0 10px;
+                    font-weight: 700;
+                    font-size: 28px;
+                ">Welcome to Rajasthan</h2>
+                
+                <p style="
+                    color: #7f8c8d;
+                    margin: 0;
+                    font-size: 16px;
+                ">Sign in to explore the royal journey</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div style="
+                display: flex;
+                background: rgba(236, 240, 241, 0.5);
+                border-radius: 15px;
+                padding: 5px;
+                margin-bottom: 25px;
+            ">
+                <button id="loginTab" class="auth-tab active" style="
+                    flex: 1;
+                    padding: 12px;
+                    border: none;
+                    background: linear-gradient(135deg, #3498db, #2980b9);
+                    color: white;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+                ">Login</button>
+                
+                <button id="signupTab" class="auth-tab" style="
+                    flex: 1;
+                    padding: 12px;
+                    border: none;
+                    background: transparent;
+                    color: #7f8c8d;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form">
+                <form>
+                    <div style="margin-bottom: 20px;">
+                        <div style="
+                            position: relative;
+                            background: rgba(255, 255, 255, 0.8);
+                            border-radius: 15px;
+                            border: 2px solid rgba(52, 152, 219, 0.1);
+                            transition: all 0.3s ease;
+                        " 
+                        onfocusin="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='0 5px 15px rgba(52, 152, 219, 0.2)'"
+                        onfocusout="this.style.borderColor='rgba(52, 152, 219, 0.1)'; this.style.boxShadow='none'">
+                            <i class="fas fa-envelope" style="
+                                position: absolute;
+                                left: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: #7f8c8d;
+                                font-size: 16px;
+                            "></i>
+                            <input type="email" placeholder="Email Address" required style="
+                                width: 100%;
+                                padding: 15px 15px 15px 50px;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                outline: none;
+                                border-radius: 15px;
+                            ">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="
+                            position: relative;
+                            background: rgba(255, 255, 255, 0.8);
+                            border-radius: 15px;
+                            border: 2px solid rgba(52, 152, 219, 0.1);
+                            transition: all 0.3s ease;
+                        "
+                        onfocusin="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='0 5px 15px rgba(52, 152, 219, 0.2)'"
+                        onfocusout="this.style.borderColor='rgba(52, 152, 219, 0.1)'; this.style.boxShadow='none'">
+                            <i class="fas fa-lock" style="
+                                position: absolute;
+                                left: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: #7f8c8d;
+                                font-size: 16px;
+                            "></i>
+                            <input type="password" placeholder="Password" required style="
+                                width: 100%;
+                                padding: 15px 15px 15px 50px;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                outline: none;
+                                border-radius: 15px;
+                            ">
+                        </div>
+                    </div>
+
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 25px;
+                        font-size: 14px;
+                    ">
+                        <label style="display: flex; align-items: center; color: #7f8c8d; cursor: pointer;">
+                            <input type="checkbox" style="margin-right: 8px;">
+                            Remember me
+                        </label>
+                        <a href="#" style="color: #3498db; text-decoration: none;">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" style="
+                        width: 100%;
+                        padding: 15px;
+                        background: linear-gradient(135deg, #e74c3c, #f39c12);
+                        color: white;
+                        border: none;
+                        border-radius: 15px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+                    "
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 35px rgba(231, 76, 60, 0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(231, 76, 60, 0.3)'">
+                        Login to Explore
+                    </button>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupForm" class="auth-form" style="display: none;">
+                <form>
+                    <div style="margin-bottom: 20px;">
+                        <div style="
+                            position: relative;
+                            background: rgba(255, 255, 255, 0.8);
+                            border-radius: 15px;
+                            border: 2px solid rgba(52, 152, 219, 0.1);
+                            transition: all 0.3s ease;
+                        "
+                        onfocusin="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='0 5px 15px rgba(52, 152, 219, 0.2)'"
+                        onfocusout="this.style.borderColor='rgba(52, 152, 219, 0.1)'; this.style.boxShadow='none'">
+                            <i class="fas fa-user" style="
+                                position: absolute;
+                                left: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: #7f8c8d;
+                                font-size: 16px;
+                            "></i>
+                            <input type="text" placeholder="Full Name" required style="
+                                width: 100%;
+                                padding: 15px 15px 15px 50px;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                outline: none;
+                                border-radius: 15px;
+                            ">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="
+                            position: relative;
+                            background: rgba(255, 255, 255, 0.8);
+                            border-radius: 15px;
+                            border: 2px solid rgba(52, 152, 219, 0.1);
+                            transition: all 0.3s ease;
+                        "
+                        onfocusin="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='0 5px 15px rgba(52, 152, 219, 0.2)'"
+                        onfocusout="this.style.borderColor='rgba(52, 152, 219, 0.1)'; this.style.boxShadow='none'">
+                            <i class="fas fa-envelope" style="
+                                position: absolute;
+                                left: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: #7f8c8d;
+                                font-size: 16px;
+                            "></i>
+                            <input type="email" placeholder="Email Address" required style="
+                                width: 100%;
+                                padding: 15px 15px 15px 50px;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                outline: none;
+                                border-radius: 15px;
+                            ">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="
+                            position: relative;
+                            background: rgba(255, 255, 255, 0.8);
+                            border-radius: 15px;
+                            border: 2px solid rgba(52, 152, 219, 0.1);
+                            transition: all 0.3s ease;
+                        "
+                        onfocusin="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='0 5px 15px rgba(52, 152, 219, 0.2)'"
+                        onfocusout="this.style.borderColor='rgba(52, 152, 219, 0.1)'; this.style.boxShadow='none'">
+                            <i class="fas fa-phone" style="
+                                position: absolute;
+                                left: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: #7f8c8d;
+                                font-size: 16px;
+                            "></i>
+                            <input type="tel" placeholder="Phone Number" required style="
+                                width: 100%;
+                                padding: 15px 15px 15px 50px;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                outline: none;
+                                border-radius: 15px;
+                            ">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="
+                            position: relative;
+                            background: rgba(255, 255, 255, 0.8);
+                            border-radius: 15px;
+                            border: 2px solid rgba(52, 152, 219, 0.1);
+                            transition: all 0.3s ease;
+                        "
+                        onfocusin="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='0 5px 15px rgba(52, 152, 219, 0.2)'"
+                        onfocusout="this.style.borderColor='rgba(52, 152, 219, 0.1)'; this.style.boxShadow='none'">
+                            <i class="fas fa-lock" style="
+                                position: absolute;
+                                left: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                color: #7f8c8d;
+                                font-size: 16px;
+                            "></i>
+                            <input type="password" placeholder="Password" required style="
+                                width: 100%;
+                                padding: 15px 15px 15px 50px;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                outline: none;
+                                border-radius: 15px;
+                            ">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: flex; align-items: center; color: #7f8c8d; cursor: pointer; font-size: 14px;">
+                            <input type="checkbox" style="margin-right: 8px;" required>
+                            I agree to the <a href="#" style="color: #3498db; text-decoration: none;">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" style="
+                        width: 100%;
+                        padding: 15px;
+                        background: linear-gradient(135deg, #27ae60, #229954);
+                        color: white;
+                        border: none;
+                        border-radius: 15px;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 10px 25px rgba(39, 174, 96, 0.3);
+                    "
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 35px rgba(39, 174, 96, 0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(39, 174, 96, 0.3)'">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Show modal on page load
+window.addEventListener('load', function() {
+    const modal = document.getElementById('authModal');
+    const modalContent = modal.querySelector('.auth-modal');
+    
+    // Small delay to ensure page is fully loaded
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
+        modalContent.style.transform = 'scale(1)';
+    }, 500);
+});
+
+// Close modal functionality
+document.getElementById('closeModal').addEventListener('click', function() {
+    const modal = document.getElementById('authModal');
+    const modalContent = modal.querySelector('.auth-modal');
+    
+    modalContent.style.transform = 'scale(0.7)';
+    modal.style.opacity = '0';
+    
+    setTimeout(() => {
+        modal.style.visibility = 'hidden';
+    }, 300);
+});
+
+// Close modal when clicking outside
+document.getElementById('authModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        document.getElementById('closeModal').click();
+    }
+});
+
+// Tab switching functionality
+document.getElementById('loginTab').addEventListener('click', function() {
+    // Switch tabs
+    document.getElementById('loginTab').style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+    document.getElementById('loginTab').style.color = 'white';
+    document.getElementById('loginTab').style.boxShadow = '0 5px 15px rgba(52, 152, 219, 0.3)';
+    
+    document.getElementById('signupTab').style.background = 'transparent';
+    document.getElementById('signupTab').style.color = '#7f8c8d';
+    document.getElementById('signupTab').style.boxShadow = 'none';
+    
+    // Switch forms
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('signupForm').style.display = 'none';
+});
+
+document.getElementById('signupTab').addEventListener('click', function() {
+    // Switch tabs
+    document.getElementById('signupTab').style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+    document.getElementById('signupTab').style.color = 'white';
+    document.getElementById('signupTab').style.boxShadow = '0 5px 15px rgba(39, 174, 96, 0.3)';
+    
+    document.getElementById('loginTab').style.background = 'transparent';
+    document.getElementById('loginTab').style.color = '#7f8c8d';
+    document.getElementById('loginTab').style.boxShadow = 'none';
+    
+    // Switch forms
+    document.getElementById('signupForm').style.display = 'block';
+    document.getElementById('loginForm').style.display = 'none';
+});
+
+// Prevent form submission for demo (remove this in production)
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Add your form submission logic here
+        alert('Form submitted! (This is a demo - add your backend logic)');
+        document.getElementById('closeModal').click();
+    });
+});
+</script>
+<!-- Navigation -->
+<!-- Enhanced Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+<div class="container">
+<!-- Brand -->
+<a class="navbar-brand" href="#home">
+<img src="logoo.jpg" alt="Logo" class="logo-image" />
+
+<div class="brand-text">
+<div class="brand-name">Explore Rajasthan</div>
+<div class="brand-tagline">Tales of Desert</div>
+</div>
+</a>
+
+<!-- Mobile Toggle -->
+<button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<span>
+<i class="fas fa-bars"></i>
+</span>
+</button>
+
+<!-- Navigation Links -->
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav mx-auto">
+<li class="nav-item">
+<a class="nav-link active" href="#home">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#about">About</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#amenities">Amenities</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#tours">Tours</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#gallery">Gallery</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#contact">Contact</a>
+</li>
+</ul>
+
+<!-- Search Icon -->
+<div class="search-icon">
+<i class="fas fa-search"></i>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+<div class="hero-content">
+<h1 class="hero-title">Welcome to Rajasthan</h1>
+<h2 class="hero-subtitle">Discover The Land of Royals</h2>
+<p class="hero-description">
+                Embark on a journey through grand forts, majestic palaces, and timeless traditions<br/>
+<em>RAJASTHAN</em> gives you the experience the royal charm of Rajasthan like never before.
+            </p>
+</div>
+</section>
+<!-- Scroll Indicator -->
+<div class="scroll-indicator">
+<i class="fas fa-chevron-down"></i>
+</div>
+</section>
+</div>
+</div>
+</section>
+<!-- Palampur Section -->
+<section class="palampur-section" id="about">
+<div class="palampur-content">
+<div class="palampur-tagline">
+                Where Heritage Meets Timesless Beauty
+            </div>
+<div class="palampur-title">
+                Rajasthan
+            </div>
+</div>
+</section>
+
+<!-- Jaipur Section -->
+<section class="city-section scroll-reveal" id="jaipur">
+<div class="container">
+    <div class="city-content">
+        <div class="city-image">
+            <img src="photos/photo-1668438773815-d54ce8c6372f.avif" alt="Jaipur - The Pink City">
+        </div>
+        <div class="city-info">
+            <div class="city-tagline">The Pink City</div>
+            <h2 class="city-title">Jaipur</h2>
+            <p class="city-description">
+                Step into the royal capital of Rajasthan, where pink-hued palaces and magnificent forts tell tales of Rajput grandeur. Jaipur seamlessly blends ancient heritage with modern vibrancy, offering an enchanting experience of royal luxury and cultural richness.
+            </p>
+            <ul class="city-features">
+                <li>Magnificent Hawa Mahal - Palace of Winds</li>
+                <li>Imposing Amber Fort with elephant rides</li>
+                <li>Bustling bazaars of Johari and Bapu</li>
+                <li>UNESCO World Heritage City status</li>
+                <li>Luxurious heritage hotels and palaces</li>
+            </ul>
+            <a href="#tours" class="explore-btn">Explore Jaipur</a>
+
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Udaipur Section -->
+<section class="city-section scroll-reveal" id="udaipur">
+<div class="container">
+    <div class="city-content">
+        <div class="city-info">
+            <div class="city-tagline">Venice of the East</div>
+            <h2 class="city-title">Udaipur</h2>
+            <p class="city-description">
+                Discover the most romantic city of India, where pristine lakes reflect magnificent palaces and the Aravalli hills provide a stunning backdrop. Udaipur's ethereal beauty and royal legacy create an atmosphere of timeless romance and regal splendor.
+            </p>
+            <ul class="city-features">
+                <li>Floating City Palace on Lake Pichola</li>
+                <li>Romantic boat rides at sunset</li>
+                <li>Intricate Jagdish Temple architecture</li>
+                <li>Luxury lake-facing heritage resorts</li>
+                <li>Vibrant traditional puppet shows</li>
+            </ul>
+            <a href="#tours" class="explore-btn">Explore Udaipur</a>
+
+        </div>
+        <div class="city-image">
+            <img src="photos/jj.avif" alt="Udaipur - Venice of the East">
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Jodhpur Section -->
+<section class="city-section scroll-reveal" id="jodhpur">
+<div class="container">
+    <div class="city-content">
+        <div class="city-image">
+            <img src="photos/jodh1.avif" alt="Jodhpur - The Blue City">
+        </div>
+        <div class="city-info">
+            <div class="city-tagline">The Blue City</div>
+            <h2 class="city-title">Jodhpur</h2>
+            <p class="city-description">
+                Immerse yourself in the azure charm of Jodhpur, where blue-painted houses cascade beneath the mighty Mehrangarh Fort. This desert citadel offers breathtaking panoramic views and showcases the finest examples of Rajputana architecture and warrior heritage.
+            </p>
+            <ul class="city-features">
+                <li>Towering Mehrangarh Fort - one of India's largest</li>
+                <li>Blue-painted old city streets</li>
+                <li>Magnificent Umaid Bhawan Palace</li>
+                <li>Authentic Rajasthani cuisine and sweets</li>
+                <li>Traditional handicrafts and textiles</li>
+            </ul>
+            <a href="#tours" class="explore-btn">Explore Jodhpur</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Jaisalmer Section -->
+<section class="city-section scroll-reveal" id="jaisalmer">
+<div class="container">
+    <div class="city-content">
+        <div class="city-info">
+            <div class="city-tagline">The Golden City</div>
+            <h2 class="city-title">Jaisalmer</h2>
+            <p class="city-description">
+                Experience the magic of the Thar Desert in Jaisalmer, where golden sandstone architecture glows like a mirage against endless sand dunes. This ancient trading post offers camel safaris, desert camping, and unforgettable sunset experiences in the heart of the desert.
+            </p>
+            <ul class="city-features">
+                <li>Living fort with shops and hotels inside</li>
+                <li>Camel safaris on Sam Sand Dunes</li>
+                <li>Intricately carved Jain temples</li>
+                <li>Desert camping under starlit skies</li>
+                <li>Traditional folk music and dance performances</li>
+            </ul>
+            <a href="#tours" class="explore-btn">Explore Jaisalmer</a>
+        </div>
+        <div class="city-image">
+            <img src="photos/jaisa3.avif" alt="Jaisalmer - The Golden City">
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Bikaner Section -->
+<section class="city-section scroll-reveal" id="bikaner">
+<div class="container">
+    <div class="city-content">
+        <div class="city-image">
+            <img src="photos/photo-1544503545-d62c3929cd4b.avif" alt="Bikaner - The Camel City">
+        </div>
+        <div class="city-info">
+            <div class="city-tagline">The Camel City</div>
+            <h2 class="city-title">Bikaner</h2>
+            <p class="city-description">
+                Discover the desert jewel of Bikaner, famous for its magnificent forts, unique camel research facilities, and mouth-watering snacks. This lesser-explored gem offers authentic desert culture, stunning architecture, and the famous Karni Mata Temple with its revered rats.
+            </p>
+            <ul class="city-features">
+                <li>Imposing Junagarh Fort with pristine condition</li>
+                <li>National Research Centre on Camel</li>
+                <li>Famous Bikaneri bhujia and sweets</li>
+                <li>Unique Karni Mata Temple (Rat Temple)</li>
+                <li>Traditional haveli architecture</li>
+            </ul>
+            <a href="#tours" class="explore-btn">Explore Bikaner</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Improved Distance Between Cities Section -->
+<div class="distance-section-wrapper py-5 position-relative" style="
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.85) 0%, rgba(52, 73, 94, 0.8) 50%, rgba(44, 62, 80, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1609920658906-8223bd289001?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+    min-height: 100vh;
+    background-attachment: fixed;
+">
+  <!-- Subtle Pattern Overlay -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="
+    background-image: url('data:image/svg+xml,<svg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"none\" fill-rule=\"evenodd\"><g fill=\"%23ffffff\" fill-opacity=\"0.03\"><circle cx=\"30\" cy=\"30\" r=\"1.5\"/></g></g></svg>');
+    pointer-events: none;
+  "></div>
+
+  <div class="container position-relative">
+    <div class="row align-items-center g-4">
+      
+      <!-- Video Section -->
+      <div class="col-lg-7 col-md-12">
+        <div class="video-wrapper position-relative" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); backdrop-filter: blur(10px);">
+          <video class="w-100 h-100" controls style="min-height: 350px; object-fit: cover;">
+            <source src="photos/mappp.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <!-- Video Overlay for Better Visual Appeal -->
+          <div class="video-overlay position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(45deg, rgba(0,0,0,0.1), transparent); pointer-events: none;"></div>
+        </div>
+      </div>
+
+      <!-- Distance Info Section -->
+      <div class="col-lg-5 col-md-12">
+        <div class="distance-info-card p-4" style="
+          background: rgba(255, 255, 255, 0.95); 
+          border-radius: 20px; 
+          box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        ">
+          <div class="section-header mb-4">
+            <h2 class="section-title mb-3" style="font-family: 'Playfair Display', serif; font-weight: 700; color: #2c3e50; font-size: 2.2rem;">
+              Distance Between Cities
+            </h2>
+            <div class="title-underline" style="width: 60px; height: 4px; background: linear-gradient(90deg, #e74c3c, #f39c12); border-radius: 2px;"></div>
+          </div>
+
+          <div class="distances-list">
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #3498db, #2980b9); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Jaipur → Udaipur</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);">
+                395 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #9b59b6, #8e44ad); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Jaipur → Jodhpur</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);">
+                335 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #34495e, #2c3e50); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Jaipur → Bikaner</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);">
+                335 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #e67e22, #d35400); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Udaipur → Jodhpur</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #27ae60, #229954); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
+                250 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #8e44ad, #7d3c98); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Udaipur → Jaisalmer</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);">
+                500 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #16a085, #138d75); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(22, 160, 133, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Jodhpur → Jaisalmer</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);">
+                285 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color: rgba(238, 238, 238, 0.5) !important;">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #2980b9, #21618c); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(41, 128, 185, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Jodhpur → Bikaner</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #27ae60, #229954); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);">
+                250 km
+              </div>
+            </div>
+
+            <div class="distance-item d-flex align-items-center justify-content-between py-3">
+              <div class="cities d-flex align-items-center">
+                <div class="route-icon me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #c0392b, #a93226); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);">
+                  <i class="fas fa-route text-white" style="font-size: 16px;"></i>
+                </div>
+                <span style="font-weight: 500; color: #2c3e50;">Bikaner → Jaisalmer</span>
+              </div>
+              <div class="distance-badge px-3 py-1" style="background: linear-gradient(135deg, #f39c12, #e67e22); color: white; border-radius: 20px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);">
+                330 km
+              </div>
+            </div>
+          </div>
+
+          <!-- Travel Tips -->
+          <div class="travel-tips mt-4 p-3" style="background: linear-gradient(135deg, rgba(236, 240, 241, 0.8), rgba(189, 195, 199, 0.8)); border-radius: 15px; backdrop-filter: blur(10px);">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-lightbulb text-warning me-2" style="filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.3));"></i>
+              <span style="font-weight: 600; color: #2c3e50; font-size: 16px;">Travel Tip</span>
+            </div>
+            <p class="mb-0" style="font-size: 14px; color: #34495e; line-height: 1.5;">
+              Plan your route efficiently! Most journeys are perfect for day trips, with scenic stops along the way to explore Rajasthan's hidden gems.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Amenities Section -->
+<section class="amenities-section" id="amenities">
+    <div class="container">
+        <div class="amenities-header text-center mb-5">
+            <div class="amenities-tagline">Premium Services</div>
+            <h2 class="amenities-title">Our Amenities</h2>
+            <p class="amenities-description">
+                Experience luxury and comfort with our comprehensive range of services designed to make your Rajasthan journey unforgettable.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Accommodation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="amenity-card">
+                    <div class="amenity-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <div class="amenity-content">
+                        <h4 class="amenity-title">Luxury Accommodation</h4>
+                        <p class="amenity-description">
+                            Stay in heritage hotels, royal palaces, and luxury resorts that offer authentic Rajasthani hospitality with modern amenities.
+                        </p>
+                        <ul class="amenity-features">
+                            <li>Heritage Palace Hotels</li>
+                            <li>Luxury Desert Camps</li>
+                            <li>Boutique Havelis</li>
+                            <li>5-Star Resorts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transportation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="amenity-card">
+                    <div class="amenity-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="amenity-content">
+                        <h4 class="amenity-title">Premium Transportation</h4>
+                        <p class="amenity-description">
+                            Travel in comfort with our fleet of luxury vehicles, traditional transport options, and expert drivers who know every corner of Rajasthan.
+                        </p>
+                        <ul class="amenity-features">
+                            <li>Luxury Cars & SUVs</li>
+                            <li>Camel Safaris</li>
+                            <li>Horse Cart Rides</li>
+                            <li>Royal Train Journeys</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dining -->
+            <div class="col-lg-4 col-md-6">
+                <div class="amenity-card">
+                    <div class="amenity-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="amenity-content">
+                        <h4 class="amenity-title">Authentic Dining</h4>
+                        <p class="amenity-description">
+                            Savor the rich flavors of Rajasthani cuisine with royal dining experiences, traditional thali meals, and rooftop restaurants.
+                        </p>
+                        <ul class="amenity-features">
+                            <li>Royal Dining Experiences</li>
+                            <li>Traditional Rajasthani Thali</li>
+                            <li>Desert BBQ Dinners</li>
+                            <li>Rooftop Restaurants</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cultural Activities -->
+            <div class="col-lg-4 col-md-6">
+                <div class="amenity-card">
+                    <div class="amenity-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="amenity-content">
+                        <h4 class="amenity-title">Cultural Experiences</h4>
+                        <p class="amenity-description">
+                            Immerse yourself in Rajasthan's rich culture with folk performances, traditional workshops, and authentic local interactions.
+                        </p>
+                        <ul class="amenity-features">
+                            <li>Folk Music & Dance Shows</li>
+                            <li>Puppet Show Performances</li>
+                            <li>Handicraft Workshops</li>
+                            <li>Village Cultural Tours</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adventure Activities -->
+            <div class="col-lg-4 col-md-6">
+                <div class="amenity-card">
+                    <div class="amenity-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div class="amenity-content">
+                        <h4 class="amenity-title">Adventure & Sports</h4>
+                        <p class="amenity-description">
+                            Experience thrilling adventures from hot air balloon rides to desert camping, zip-lining, and wildlife safaris.
+                        </p>
+                        <ul class="amenity-features">
+                            <li>Hot Air Balloon Rides</li>
+                            <li>Desert Camping</li>
+                            <li>Wildlife Safaris</li>
+                            <li>Zip-lining Adventures</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wellness & Spa -->
+            <div class="col-lg-4 col-md-6">
+                <div class="amenity-card">
+                    <div class="amenity-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <div class="amenity-content">
+                        <h4 class="amenity-title">Wellness & Spa</h4>
+                        <p class="amenity-description">
+                            Rejuvenate your mind and body with traditional Ayurvedic treatments, royal spa experiences, and wellness retreats.
+                        </p>
+                        <ul class="amenity-features">
+                            <li>Ayurvedic Treatments</li>
+                            <li>Royal Spa Experiences</li>
+                            <li>Yoga & Meditation</li>
+                            <li>Wellness Retreats</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Features -->
+        <div class="special-features mt-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="features-content">
+                        <h3 class="features-title">What Makes Us Special</h3>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>24/7 Customer Support</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Expert Local Guides</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Customized Itineraries</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Best Price Guarantee</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Authentic Experiences</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Safety & Security</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="features-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Happy Travelers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Destinations</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tours Section -->
+<section class="tours-section" id="tours">
+    <div class="tours-container">
+        <div class="tours-header">
+            <div class="tours-tagline">Experience Rajasthan</div>
+            <h2 class="tours-title">Featured Tours</h2>
+            <p class="tours-description">
+                Discover the magic of Rajasthan through our carefully curated tour experiences, 
+                each offering a unique glimpse into the royal heritage and vibrant culture.
+            </p>
+        </div>
+
+        <div class="tours-slider">
+            <div class="tours-track">
+                <!-- Tour Video 1 -->
+                <div class="tour-slide active">
+                    <div class="video-container">
+                        <video class="tour-video" muted preload="metadata">
+                            <source src="photos/ja.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay"></div>
+                        <div class="tour-content">
+                            <h3 class="tour-title">Jaipur</h3>
+                            <p class="tour-description">Experience the classic Jaipur with royal palaces and historic monuments.</p>
+                            <div class="tour-features">
+                                <span class="tour-duration">3 Days</span>
+                                <span class="tour-price">From ₹9,999</span>
+                            </div>
+                            <button class="tour-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tour Video 2 -->
+                <div class="tour-slide">
+                    <div class="video-container">
+                        <video class="tour-video" muted preload="metadata">
+                            <source src="photos/udaivi.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay"></div>
+                        <div class="tour-content">
+                            <h3 class="tour-title">Udaipur</h3>
+                            <p class="tour-description">Immerse yourself in the the "City of Lakes," enchants with its majestic palaces, serene waters, and rich royal heritage.</p>
+                            <div class="tour-features">
+                                <span class="tour-duration">3 Days</span>
+                                <span class="tour-price">From ₹14,999</span>
+                            </div>
+                            <button class="tour-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tour Video 3 -->
+                <div class="tour-slide">
+                    <div class="video-container">
+                        <video class="tour-video" muted preload="metadata">
+                            <source src="photos/jodhhh.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay"></div>
+                        <div class="tour-content">
+                            <h3 class="tour-title">Jodhpur</h3>
+                            <p class="tour-description">The "Blue City," captivates with its towering Mehrangarh Fort, vibrant blue houses, and regal Marwari charm.</p>
+                            <div class="tour-features">
+                                <span class="tour-duration">3 Days</span>
+                                <span class="tour-price">From ₹9,999</span>
+                            </div>
+                            <button class="tour-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tour Video 4 -->
+                <div class="tour-slide">
+                    <div class="video-container">
+                        <video class="tour-video" muted preload="metadata">
+                            <source src="photos/jaisalm.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay"></div>
+                        <div class="tour-content">
+                            <h3 class="tour-title">Jaisalmer</h3>
+                            <p class="tour-description">The "Golden City," mesmerizes with its sandstone forts, desert dunes, and timeless charm of Rajasthani culture.</p>
+                            <div class="tour-features">
+                                <span class="tour-duration">3 Days</span>
+                                <span class="tour-price">From ₹10,999</span>
+                            </div>
+                            <button class="tour-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tour Video 5 -->
+                <div class="tour-slide">
+                    <div class="video-container">
+                        <video class="tour-video" muted preload="metadata">
+                            <source src="photos/bikaner.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay"></div>
+                        <div class="tour-content">
+                            <h3 class="tour-title">Bikaner</h3>
+                            <p class="tour-description">The "Camel City," delights with its majestic forts, rich sweets, and vibrant desert traditions.</p>
+                            <div class="tour-features">
+                                <span class="tour-duration">3 Days</span>
+                                <span class="tour-price">From ₹9,999</span>
+                            </div>
+                            <button class="tour-btn">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <button class="tour-nav nav-prev">‹</button>
+            <button class="tour-nav nav-next">›</button>
+
+            <!-- Progress Indicators -->
+            <div class="tour-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+                <div class="dot" data-slide="3"></div>
+                <div class="dot" data-slide="4"></div>
+            </div>
+
+            <!-- Play/Pause Button -->
+            <button class="play-pause-btn">
+                <i class="fas fa-pause"></i>
+            </button>
+        </div>
+    </div>
+</section>
+            <!-- Navigation Controls -->
+            <button class="tour-nav nav-prev">‹</button>
+            <button class="tour-nav nav-next">›</button>
+
+            <!-- Progress Indicators -->
+            <div class="tour-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+            </div>
+
+            <!-- Play/Pause Button -->
+            <button class="play-pause-btn">
+                <i class="fas fa-pause"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="gallery-section" id="gallery">
+    <div class="gallery-container">
+        <div class="gallery-header">
+            <div class="gallery-tagline">Visual Journey</div>
+            <h2 class="gallery-title">Gallery</h2>
+            <p class="gallery-description">
+                Immerse yourself in the breathtaking beauty of Rajasthan through our curated collection of stunning photographs showcasing the timeless grandeur of the royal state.
+            </p>
+        </div>
+
+        <div class="gallery-slider">
+            <div class="gallery-track">
+                <!-- Slide 1 -->
+                <div class="gallery-slide active">
+                    <img src="photos/jai.avif" alt="Hawa Mahal">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Hawa Mahal</h3>
+                        <p class="slide-description">The iconic Palace of Winds in Jaipur, showcasing intricate Rajput architecture.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="gallery-slide">
+                    <img src="photos/lake.avif" alt="Udaipur Lake Palace">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Lake Palace, Udaipur</h3>
+                        <p class="slide-description">The ethereal beauty of floating palace on Lake Pichola.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="gallery-slide">
+                    <img src="photos/mehran.avif" alt="Mehrangarh Fort">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Mehrangarh Fort</h3>
+                        <p class="slide-description">The majestic fort overlooking the blue city of Jodhpur.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="gallery-slide">
+                    <img src="photos/fort.avif" alt="Jaisalmer Fort">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Jaisalmer Fort</h3>
+                        <p class="slide-description">Golden fort rising from the Thar Desert sands.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="gallery-slide">
+                    <img src="photos/amber.avif" alt="Amber Fort">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Amber Fort</h3>
+                        <p class="slide-description">The magnificent fort-palace complex near Jaipur.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="gallery-slide">
+                    <img src="photos/pushkar.avif" alt="Pushkar Lake">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Pushkar Lake</h3>
+                        <p class="slide-description">Sacred lake surrounded by ghats and temples in Pushkar.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 7 -->
+                <div class="gallery-slide">
+                    <img src="photos/thar.avif" alt="Thar Desert">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Thar Desert</h3>
+                        <p class="slide-description">Endless golden dunes of the Great Indian Desert.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 8 -->
+                <div class="gallery-slide">
+                    <img src="photos/ranak.avif">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Ranakpur Temple</h3>
+                        <p class="slide-description">Intricate marble Jain temple with stunning architecture.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 9 -->
+                <div class="gallery-slide">
+                    <img src="photos/camel.avif" alt="Camel Safari">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Camel Safari</h3>
+                        <p class="slide-description">Traditional desert experience in the heart of Rajasthan.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 10 -->
+                <div class="gallery-slide">
+                    <img src="photos/cul.avif" alt="Rajasthani Culture">
+                    <div class="slide-overlay"></div>
+                    <div class="slide-content">
+                        <h3 class="slide-title">Cultural Heritage</h3>
+                        <p class="slide-description">Vibrant festivals and traditional performances of Rajasthan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <button class="gallery-nav nav-prev">‹</button>
+            <button class="gallery-nav nav-next">›</button>
+
+            <!-- Progress Bar -->
+            <div class="gallery-progress"></div>
+
+            <!-- Dots Navigation -->
+            <div class="gallery-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+                <div class="dot" data-slide="3"></div>
+                <div class="dot" data-slide="4"></div>
+                <div class="dot" data-slide="5"></div>
+                <div class="dot" data-slide="6"></div>
+                <div class="dot" data-slide="7"></div>
+                <div class="dot" data-slide="8"></div>
+                <div class="dot" data-slide="9"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+      <!-- Contact Section with Background Image (No Fade) -->
+<section id="contact" class="contact-section py-5 text-dark"
+         style="background-image: url('photos/jodh3.avif'); background-size: cover; background-position: center; background-attachment: fixed;">
+
+  <div class="container">
+    <div class="row align-items-center" style="background-color: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+      <!-- Contact Form -->
+      <div class="col-lg-6 mb-4">
+        <div>
+          <p class="mb-3 text-muted">
+            <small>Fields marked with <span class="text-danger">*</span> are required</small>
+          </p>
+          <form>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Full Name *" required>
+            </div>
+            <div class="mb-3">
+              <input type="email" class="form-control" placeholder="Email *" required>
+            </div>
+            <div class="mb-3">
+              <input type="tel" class="form-control" placeholder="Phone *" required>
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="City">
+            </div>
+            <button type="submit" class="btn btn-dark w-100">Send Message</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-lg-6 ps-lg-5">
+        <h2 class="mb-3" style="font-family: 'Playfair Display', serif; font-weight: 700;">
+          Get in Touch with Rajasthan
+        </h2>
+        <p class="mb-4 text-muted">
+          Have questions about your trip? Want personalized travel tips? Reach out and our team will guide you through Rajasthan’s hidden gems, best routes, and unforgettable experiences.
+        </p>
+
+        <ul class="list-unstyled text-dark mb-4" style="font-size: 1.1rem;">
+          <li class="mb-2">
+            <i class="fas fa-phone-alt me-2 text-secondary"></i>
+            <strong>Phone:</strong>
+            <a href="tel:+918423589445" class="text-dark text-decoration-none">+91 84235 89445</a>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-envelope me-2 text-secondary"></i>
+            <strong>Email:</strong>
+            <a href="mailto:amaanhussain9467@gmail.com" class="text-dark text-decoration-none">amaanhussain9467@gmail.com</a>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+            <strong>Address:</strong> WTP Mall, Gate 2
+          </li>
+        </ul>
+
+        <h5 class="mt-4">Follow Us</h5>
+        <div class="d-flex gap-3 mt-2">
+          <a href="#" class="text-dark fs-4"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-dark fs-4"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-dark fs-4"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="text-dark fs-4"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JavaScript -->
+<script src="script.js"></script>
+
+<!-- Custom JavaScript -->
+
+<script src="script.js"></script></body>
+</html>
